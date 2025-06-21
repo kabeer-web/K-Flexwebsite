@@ -1,0 +1,197 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #fffbe6, #fff2cc);
+  margin: 0;
+  padding: 0;
+}
+.product-detail-page {
+  display: flex;
+  flex-direction: column; /* 👉 THIS line is key */
+  align-items: center;
+  padding: 60px 20px;
+}
+
+
+.product-card-glass {
+  display: flex;
+  flex-wrap: wrap;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 1000px;
+  width: 100%;
+  gap: 40px;
+}
+
+.image-side, .info-side {
+  flex: 1;
+  min-width: 300px;
+}
+
+.image-wrapper {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.image-wrapper img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  transition: transform 0.4s ease;
+}
+
+.image-wrapper:hover img {
+  transform: scale(1.08);
+}
+
+.info-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+.wishlist {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+h2 {
+  font-size: 28px;
+  color: #111;
+}
+
+.desc {
+  color: #444;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.pricing {
+  background: #fffefa;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.pricing p,
+.pricing h3 {
+  margin: 5px 0;
+  font-weight: 500;
+}
+
+.btn-glass {
+  padding: 14px 22px;
+  background: linear-gradient(135deg, #feb500, #fbc847);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-glass:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.quantity-control button {
+  padding: 8px 12px;
+  background-color: #feb500;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.quantity-control button:hover {
+  background-color: #ff9f00;
+}
+
+.quantity-control span {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.loading-shimmer {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e2e2e2 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 20px;
+  margin: 50px auto;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 768px) {
+  .product-card-glass {
+    flex-direction: column;
+  }
+}
+
+.size-selector {
+  margin-top: 10px;
+}
+
+.size-selector p {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.size-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.size-btn {
+  padding: 8px 16px;
+  border: 2px solid #feb500;
+  border-radius: 10px;
+  background: transparent;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.size-btn:hover {
+  background: #feb500;
+  color: white;
+}
+
+.size-btn.active {
+  background: #feb500;
+  color: white;
+}
