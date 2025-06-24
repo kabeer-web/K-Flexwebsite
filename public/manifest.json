@@ -1,6 +1,6 @@
 {
-  "short_name": "KHF Collective",
-  "name": "KHF Collective - Your Source for [Your Content/Service]",
+  "short_name": "KHF",
+  "name": "KHF Collective - Your Source for Stylish Apparel",
   "icons": [
     {
       "src": "/icons/favicon.ico",
@@ -9,20 +9,20 @@
     },
     {
       "src": "/icons/logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
       "src": "/icons/logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#feb500",
   "background_color": "#ffffff",
-  "description": "KHF Collective offers [brief description of your services or content].",
+  "description": "KHF Collective offers premium t-shirts with unique style and design.",
   "lang": "en-US",
   "orientation": "portrait"
 }
