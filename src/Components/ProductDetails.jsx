@@ -17,7 +17,7 @@ const ProductDetails = ({ addToCart, addToWishlist, wishlistItems = [] }) => {
     if (!id) return;
 
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/products/${id}`)
+      .get(`https://kflex-backend.vercel.app/api/products/${id}`)
       .then((res) => {
         setProduct(res.data);
         setIsInWishlist(
@@ -50,7 +50,11 @@ const ProductDetails = ({ addToCart, addToWishlist, wishlistItems = [] }) => {
         </div>
 
         <div className="info-side">
-          <div className="wishlist" onClick={handleAddToWishlist} title="Add to Wishlist">
+          <div
+            className="wishlist"
+            onClick={handleAddToWishlist}
+            title="Add to Wishlist"
+          >
             {isInWishlist ? <FaHeart color="#ff5252" /> : <FaRegHeart />}
           </div>
 
