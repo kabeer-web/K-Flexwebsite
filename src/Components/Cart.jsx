@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from "axios";
-import emailjs from 'emailjs-com';
 import { Modal, Button, Form, Col, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,33 +21,29 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handlePurchase = (e) => {
+  const handlePurchase = async (e) => {
     e.preventDefault();
-
-    axios.post("http://localhost:5000/api/orders", {
-      name: formData.name,
-      phone: formData.phoneNumber,
-      email: formData.emailAddress,
-      address: formData.address,
-      country: formData.country,
-      products: cartItems,
-      totalAmount: total
-    })
-    .then(() => {
+    try {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/orders`, {
+        name: formData.name,
+        phone: formData.phoneNumber,
+        email: formData.emailAddress,
+        address: formData.address,
+        country: formData.country,
+        products: cartItems,
+        totalAmount: total
+      });
       setMessage('Order placed successfully');
       setIsModalOpen(false);
       setIsSuccessModalOpen(true);
       clearCart();
-    })
-    .catch(() => {
-      setMessage('Error placing order');
-    });
+    } catch (error) {
+      console.error("Order placement error:", error);
+      setMessage('Error placing order. Please try again.');
+    }
   };
 
   return (
@@ -65,16 +60,16 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
           {cartItems.length > 0 ? (
             <ul className="list-group">
               {cartItems.map(item => (
-                <li key={item.id} className="list-group-item cart-item d-flex flex-column flex-md-row align-items-center justify-content-between">
-                  <img src={item.image} alt={`Product - ${item.name}`} title={item.name} style={styles.itemImage} />
+                <li key={item._id} className="list-group-item cart-item d-flex flex-column flex-md-row align-items-center justify-content-between">
+                  <img src={item.image} alt={item.name} style={styles.itemImage} />
                   <div className="text-center text-md-start">
                     <h5>{item.name}</h5>
                     <p>Rs. {item.price}</p>
-                    <p>Size: {item.selectedSize}</p>
+                    <p>Size: {item.selectedSize || "N/A"}</p>
                   </div>
                   <div className="mt-2 mt-md-0 d-flex flex-column gap-2">
-                    <Button title="Remove from cart" variant="light" className="w-100" onClick={() => removeFromCart(item.id)} style={styles.removeButton}>Remove</Button>
-                    <Button title="Proceed to purchase" variant="dark" className="w-100" onClick={() => setIsModalOpen(true)} style={styles.purchaseButton}>Purchase</Button>
+                    <Button variant="light" className="w-100" onClick={() => removeFromCart(item._id)} style={styles.removeButton}>Remove</Button>
+                    <Button variant="dark" className="w-100" onClick={() => setIsModalOpen(true)} style={styles.purchaseButton}>Purchase</Button>
                   </div>
                 </li>
               ))}
@@ -91,7 +86,6 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
         </Col>
       </Row>
 
-      {/* Purchase Modal */}
       <Modal show={isModalOpen} onHide={() => setIsModalOpen(false)} centered>
         <Modal.Header closeButton style={styles.modalHeader}>
           <Modal.Title>Purchase Information</Modal.Title>
@@ -117,7 +111,6 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
         </Modal.Body>
       </Modal>
 
-      {/* Success Modal */}
       <Modal show={isSuccessModalOpen} onHide={() => setIsSuccessModalOpen(false)} centered>
         <Modal.Header closeButton style={styles.modalHeader}>
           <Modal.Title>Order Confirmation</Modal.Title>
@@ -137,7 +130,6 @@ const Cart = ({ cartItems, removeFromCart, clearCart }) => {
 const Container = styled.div`
   padding: 20px;
   background-color: #f8f9fa;
-
   @media (max-width: 768px) {
     .cart-item img {
       width: 60px !important;
