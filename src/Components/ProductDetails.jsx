@@ -16,8 +16,10 @@ const ProductDetails = ({ addToCart, addToWishlist, wishlistItems = [] }) => {
   useEffect(() => {
     if (!id) return;
 
+    const apiUrl = process.env.REACT_APP_API_URL || "https://kflex-backend.vercel.app";
+
     axios
-      .get(`https://kflex-backend.vercel.app/api/products/${id}`)
+      .get(`${apiUrl}/api/products/${id}`)
       .then((res) => {
         setProduct(res.data);
         setIsInWishlist(
