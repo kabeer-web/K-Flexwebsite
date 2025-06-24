@@ -1,28 +1,28 @@
 {
-  "short_name": "KHF",
-  "name": "KHF Collective - Your Source for Stylish Apparel",
+  "short_name": "K-Flex",
+  "name": "K-Flex - Stylish Apparel for Bold People",
   "icons": [
     {
-      "src": "/icons/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
       "src": "/icons/logo192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "sizes": "192x192"
     },
     {
       "src": "/icons/logo512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "64x64 32x32 24x24 16x16"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#feb500",
   "background_color": "#ffffff",
-  "description": "KHF Collective offers premium t-shirts with unique style and design.",
+  "description": "K-Flex offers premium drop-shoulder and streetwear fashion for the bold generation.",
   "lang": "en-US",
-  "orientation": "portrait"
+  "orientation": "portrait-primary"
 }
