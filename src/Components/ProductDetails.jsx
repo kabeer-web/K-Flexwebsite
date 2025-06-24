@@ -15,20 +15,30 @@ const ProductDetails = ({ addToCart, addToWishlist, wishlistItems = [] }) => {
 
   useEffect(() => {
     if (!id) return;
+
     axios
-      .get(`http://localhost:5000/api/products/${id}`)
+      .get(`${process.env.REACT_APP_API_URL}/api/products/${id}`)
       .then((res) => {
         setProduct(res.data);
         setIsInWishlist(
           wishlistItems.some((item) => item._id === res.data._id)
         );
       })
-      .catch((err) => console.error("❌ Error fetching product:", err));
+      .catch((err) =>
+        console.error("❌ Error fetching product:", err?.response?.data || err)
+      );
   }, [id, wishlistItems]);
 
   if (!product) return <div className="loading-shimmer">Loading...</div>;
 
   const totalPrice = product.price + DELIVERY_CHARGE;
+
+  const handleAddToWishlist = () => {
+    if (!isInWishlist) {
+      addToWishlist({ ...product, selectedSize });
+      setIsInWishlist(true);
+    }
+  };
 
   return (
     <div className="product-detail-page">
@@ -40,16 +50,7 @@ const ProductDetails = ({ addToCart, addToWishlist, wishlistItems = [] }) => {
         </div>
 
         <div className="info-side">
-          <div
-            className="wishlist"
-            onClick={() => {
-              if (!isInWishlist) {
-                addToWishlist({ ...product, selectedSize });
-                setIsInWishlist(true);
-              }
-            }}
-            title="Add to Wishlist"
-          >
+          <div className="wishlist" onClick={handleAddToWishlist} title="Add to Wishlist">
             {isInWishlist ? <FaHeart color="#ff5252" /> : <FaRegHeart />}
           </div>
 
@@ -86,15 +87,8 @@ const ProductDetails = ({ addToCart, addToWishlist, wishlistItems = [] }) => {
             </button>
             <button
               className="btn-glass wishlist-btn"
-              style={{
-                background: isInWishlist ? "#ff5252" : "#fbc847",
-              }}
-              onClick={() => {
-                if (!isInWishlist) {
-                  addToWishlist({ ...product, selectedSize });
-                  setIsInWishlist(true);
-                }
-              }}
+              style={{ background: isInWishlist ? "#ff5252" : "#fbc847" }}
+              onClick={handleAddToWishlist}
             >
               {isInWishlist ? "Wishlisted ❤️" : "Add to Wishlist 🤍"}
             </button>
