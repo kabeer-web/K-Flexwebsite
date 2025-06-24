@@ -18,10 +18,11 @@ const Reviews = ({ productId, productName }) => {
   const fetchReviews = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/reviews/product/${productId}`
+        `${process.env.REACT_APP_API_URL}/api/reviews/product/${productId}`
       );
       setReviews(res.data);
     } catch (err) {
+      toast.error("❌ Failed to fetch reviews");
       console.error("Error fetching reviews:", err);
     }
   };
@@ -29,7 +30,7 @@ const Reviews = ({ productId, productName }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/reviews", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/reviews`, {
         ...newReview,
         productId,
         productName,
@@ -85,7 +86,7 @@ const Reviews = ({ productId, productName }) => {
         </button>
       </form>
 
-      {/* 🟡 Review List */}
+      {/* Review List */}
       <div
         style={{
           ...styles.reviewList,
@@ -129,7 +130,7 @@ const Reviews = ({ productId, productName }) => {
 
 export default Reviews;
 
-// 🟡 Styles
+// Styles
 const styles = {
   wrapper: {
     marginTop: "4rem",
@@ -144,7 +145,6 @@ const styles = {
     maxWidth: "1000px",
     marginLeft: "auto",
     marginRight: "auto",
-    animation: "fadeIn 0.5s ease-in-out",
   },
   heading: {
     fontSize: "2rem",
