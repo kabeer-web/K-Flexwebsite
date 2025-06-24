@@ -17,20 +17,27 @@ const Reviews = ({ productId, productName }) => {
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/reviews/product/${productId}`
-      );
-      setReviews(res.data);
+      const apiUrl = process.env.REACT_APP_API_URL || "https://kflex-backend.vercel.app";
+      const res = await axios.get(`${apiUrl}/api/reviews/product/${productId}`);
+
+      if (Array.isArray(res.data)) {
+        setReviews(res.data);
+      } else {
+        console.error("❌ Reviews is not an array:", res.data);
+        setReviews([]);
+      }
     } catch (err) {
       toast.error("❌ Failed to fetch reviews");
       console.error("Error fetching reviews:", err);
+      setReviews([]);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/reviews`, {
+      const apiUrl = process.env.REACT_APP_API_URL || "https://kflex-backend.vercel.app";
+      await axios.post(`${apiUrl}/api/reviews`, {
         ...newReview,
         productId,
         productName,
@@ -94,27 +101,33 @@ const Reviews = ({ productId, productName }) => {
           overflowY: showAll ? "visible" : "auto",
         }}
       >
-        {reviews.map((review, index) => (
-          <div key={index} style={styles.reviewCard}>
-            <div style={styles.userRow}>
-              <div style={styles.userIcon}>
-                {review.userName?.charAt(0).toUpperCase()}
+        {Array.isArray(reviews) && reviews.length > 0 ? (
+          reviews.map((review, index) => (
+            <div key={index} style={styles.reviewCard}>
+              <div style={styles.userRow}>
+                <div style={styles.userIcon}>
+                  {review.userName?.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <p style={styles.userName}>{review.userName}</p>
+                  <p style={styles.date}>
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p style={styles.userName}>{review.userName}</p>
-                <p style={styles.date}>
-                  {new Date(review.createdAt).toLocaleDateString()}
-                </p>
-              </div>
+              <p style={styles.stars}>⭐ {review.rating} / 5</p>
+              <p style={styles.comment}>{review.comment}</p>
             </div>
-            <p style={styles.stars}>⭐ {review.rating} / 5</p>
-            <p style={styles.comment}>{review.comment}</p>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p style={{ textAlign: "center", color: "#6b7280" }}>
+            No reviews found for this product.
+          </p>
+        )}
       </div>
 
       {/* Show More / Less */}
-      {reviews.length > 4 && (
+      {Array.isArray(reviews) && reviews.length > 4 && (
         <div style={{ textAlign: "center", marginTop: "1rem" }}>
           <button
             onClick={() => setShowAll(!showAll)}
