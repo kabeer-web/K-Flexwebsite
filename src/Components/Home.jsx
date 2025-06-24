@@ -18,9 +18,11 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/products`);
-        
-        // ✅ Fix: Make sure response is an array
+        const apiUrl = process.env.REACT_APP_API_URL || "https://kflex-backend.vercel.app";
+        console.log("API Base URL:", apiUrl);
+
+        const res = await axios.get(`${apiUrl}/api/products`);
+
         if (Array.isArray(res.data)) {
           setProducts(res.data);
         } else {
@@ -43,6 +45,7 @@ const HomePage = () => {
   return (
     <div className="home-page">
       <Container className="mt-5">
+        {/* Hero Section */}
         <div className="hero-section">
           <div className="hero-content" data-aos="zoom-in">
             <h1 className="hero-title typewriter">K-Flex CLOTHS</h1>
@@ -53,40 +56,44 @@ const HomePage = () => {
           </div>
         </div>
 
+        {/* Products Section */}
         <div ref={productsSectionRef}>
           <h3 className="section-title" data-aos="fade-up">🔥 Trending Now</h3>
           <Row xs={1} sm={2} md={2} lg={3} xl={4} className="g-4 mt-4">
-            {products.length > 0 ? products.slice(0, 4).map((product) => (
-              <Col key={product._id} className="mb-4" data-aos="fade-up">
-                <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <Card className="product-card">
-                    <div className="card-image">
-                      <Card.Img 
-                        variant="top" 
-                        src={product.image} 
-                        alt={`Image of ${product.name}`} 
-                      />
-                      <div className="price-tag">PKR {product.price}</div>
-                      <FaHeart className="wishlist-icon" />
-                      {product.price < 1000 && (
-                        <div className="badge-offer">🔥 Limited Offer</div>
-                      )}
-                    </div>
-                    <Card.Body>
-                      <Card.Title className="product-title">{product.name}</Card.Title>
-                      <div className="rating-stars">
-                        <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
+            {products.length > 0 ? (
+              products.slice(0, 4).map((product) => (
+                <Col key={product._id} className="mb-4" data-aos="fade-up">
+                  <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Card className="product-card">
+                      <div className="card-image">
+                        <Card.Img 
+                          variant="top" 
+                          src={product.image} 
+                          alt={`Image of ${product.name}`} 
+                        />
+                        <div className="price-tag">PKR {product.price}</div>
+                        <FaHeart className="wishlist-icon" />
+                        {product.price < 1000 && (
+                          <div className="badge-offer">🔥 Limited Offer</div>
+                        )}
                       </div>
-                      <p className="deal-label">{product.description || '🔥 Trending Now'}</p>
-                    </Card.Body>
-                  </Card>
-                </Link>
-              </Col>
-            )) : (
+                      <Card.Body>
+                        <Card.Title className="product-title">{product.name}</Card.Title>
+                        <div className="rating-stars">
+                          <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
+                        </div>
+                        <p className="deal-label">{product.description || '🔥 Trending Now'}</p>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </Col>
+              ))
+            ) : (
               <p className="text-center text-muted">No products found or failed to load.</p>
             )}
           </Row>
 
+          {/* Show More Button */}
           <div style={{ textAlign: 'center', marginTop: '30px' }} data-aos="zoom-in">
             <Link to="/Shop/Products">
               <button className="cta-btn">Show More Products →</button>
